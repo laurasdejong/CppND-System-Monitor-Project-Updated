@@ -66,7 +66,6 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-// TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() {
   string line;
   string key;
@@ -93,7 +92,7 @@ float LinuxParser::MemoryUtilization() {
   } else { //if the values are not detected
     return 0;
   }
-  }
+}
 
 // TODO: Read and return the system uptime
 long LinuxParser::UpTime() { return 0; }
@@ -115,7 +114,22 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() {
+  string line;
+  string key;
+  float value;
+  std::ifstream filestream(kProcDirectory + kStatFilename);
+  if (filestream.is_open()) {
+    while (std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> key >> value) {
+        if (key == "processes") {
+          return value;
+        }
+      }
+    }
+  }
+  return 0; }
 
 // TODO: Read and return the number of running processes
 int LinuxParser::RunningProcesses() { return 0; }
