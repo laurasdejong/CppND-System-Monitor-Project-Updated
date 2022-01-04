@@ -114,39 +114,12 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 int LinuxParser::TotalProcesses() {
-  string line;
-  string key;
-  float value;
-  std::ifstream filestream(kProcDirectory + kStatFilename);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
-      std::istringstream linestream(line);
-      while (linestream >> key >> value) {
-        if (key == "processes") {
-          return value;
-        }
-      }
-    }
-  }
-  return 0;
+  return GetValue(kProcDirectory+kStatFilename,"processes");
 }
 
 int LinuxParser::RunningProcesses() {
-  string line;
-  string key;
-  float value;
-  std::ifstream filestream(kProcDirectory + kStatFilename);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
-      std::istringstream linestream(line);
-      while (linestream >> key >> value) {
-        if (key == "procs_running") {
-          return value;
-        }
-      }
-    }
-  }
-  return 0;
+  float running_process_float = GetValue(kProcDirectory + kStatFilename,"procs_running");
+  return (int)running_process_float;
 }
 
 // TODO: Read and return the command associated with a process
@@ -168,3 +141,21 @@ string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+
+float LinuxParser::GetValue(string dir,string process_name){
+  string line;
+  string key;
+  float value;
+  std::ifstream filestream(dir);
+  if (filestream.is_open()) {
+    while (std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> key >> value) {
+        if (key == process_name) {
+          return value;
+        }
+      }
+    }
+  }
+  return 0;
+}
