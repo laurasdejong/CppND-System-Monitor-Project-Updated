@@ -87,7 +87,8 @@ long LinuxParser::UpTime() {
     std::istringstream linestream(line);
     linestream >> up_time;
   }
-  return up_time; }
+  return up_time/sysconf(_SC_CLK_TCK);
+}
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() { return 0; }
@@ -137,7 +138,8 @@ string LinuxParser::Command(int pid) {
     std::getline(stream, line);
     return line;
   }
-  return string();}
+  return string();
+}
 
 // TODO: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
@@ -151,7 +153,7 @@ string LinuxParser::Uid(int pid) {
   string path = kProcDirectory+to_string(pid)+kStatusFilename;
   float uid = GetValue(path,"Uid:");
   return to_string(uid);
-  }
+}
 
 // TODO: Read and return the user associated with a process
 string LinuxParser::User(int pid) {
@@ -169,11 +171,30 @@ string LinuxParser::User(int pid) {
       }
     }
   }
-  return 0;return string(); }
+  return string();
+}
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::UpTime(int pid[[maybe_unused]]) {
+  float value;
+  string line;
+  int i = 0;
+  std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
+  if (filestream.is_open()) {
+    while (std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> value) {
+        i++;
+        if (i == 22){
+          int ticks = value/sysconf(_SC_CLK_TCK);
+          return ticks;
+        }
+      }
+    }
+  }
+   return 0;
+}
 
 float LinuxParser::GetValue(string dir,string process_name){
   string line, key;
