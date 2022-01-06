@@ -212,21 +212,3 @@ float LinuxParser::GetValue(string dir,string process_name){
   }
   return 0;
 }
-
-// string LinuxParser::GetString(string dir,string process_name){
-//   string line;
-//   string key;
-//   string value;
-//   std::ifstream filestream(dir);
-//   if (filestream.is_open()) {
-//     while (std::getline(filestream, line)) {
-//       std::istringstream linestream(line);
-//       while (linestream >> key >> value) {
-//         if (key == process_name) {
-//           return value;
-//         }
-//       }
-//     }
-//   }
-//   return 0;
-// }
