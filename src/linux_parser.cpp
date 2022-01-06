@@ -128,28 +128,55 @@ int LinuxParser::RunningProcesses() {
 }
 
 // TODO: Read and return the command associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Command(int pid) {
+  string line;
+  string path = kProcDirectory+to_string(pid)+kCmdlineFilename;
+  std::ifstream stream(path);
+
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    return line;
+  }
+  return string();}
 
 // TODO: Read and return the memory used by a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Ram(int pid) {
+  string path = kProcDirectory+to_string(pid)+kStatusFilename;
+  float ram_kb = GetValue(path,"VmSize:");
+  return to_string(ram_kb/1000);
+}
 
 // TODO: Read and return the user ID associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Uid(int pid) {
+  string path = kProcDirectory+to_string(pid)+kStatusFilename;
+  float uid = GetValue(path,"Uid:");
+  return to_string(uid);
+  }
 
 // TODO: Read and return the user associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::User(int pid) {
+  string line, key;
+  float value;
+  std::ifstream filestream(kPasswordPath);
+  if (filestream.is_open()) {
+    while (std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> key >> value) {
+        if (value == pid) {
+          //ToDo remove doubledots
+          return key;
+        }
+      }
+    }
+  }
+  return 0;return string(); }
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
 
 float LinuxParser::GetValue(string dir,string process_name){
-  string line;
-  string key;
+  string line, key;
   float value;
   std::ifstream filestream(dir);
   if (filestream.is_open()) {
@@ -164,3 +191,21 @@ float LinuxParser::GetValue(string dir,string process_name){
   }
   return 0;
 }
+
+// string LinuxParser::GetString(string dir,string process_name){
+//   string line;
+//   string key;
+//   string value;
+//   std::ifstream filestream(dir);
+//   if (filestream.is_open()) {
+//     while (std::getline(filestream, line)) {
+//       std::istringstream linestream(line);
+//       while (linestream >> key >> value) {
+//         if (key == process_name) {
+//           return value;
+//         }
+//       }
+//     }
+//   }
+//   return 0;
+// }

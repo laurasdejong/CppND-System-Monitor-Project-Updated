@@ -27,6 +27,8 @@ int RunningProcesses();
 std::string OperatingSystem();
 std::string Kernel();
 float GetValue(std::string dir,std::string process_name);
+// std::string GetString(std::string dir,std::string process_name);
+
 
 // CPU
 enum CPUStates {
