@@ -88,6 +88,7 @@ long LinuxParser::UpTime() {
     linestream >> up_time;
   }
   return up_time/sysconf(_SC_CLK_TCK);
+  // ToDo format.cpp Time() voor "HH:MM:SS"
 }
 
 // TODO: Read and return the number of jiffies for the system
@@ -188,12 +189,13 @@ long LinuxParser::UpTime(int pid[[maybe_unused]]) {
         i++;
         if (i == 22){
           int ticks = value/sysconf(_SC_CLK_TCK);
+          // ToDo format.cpp Time() voor "HH:MM:SS"
           return ticks;
         }
       }
     }
   }
-   return 0;
+  return 0;
 }
 
 float LinuxParser::GetValue(string dir,string process_name){
