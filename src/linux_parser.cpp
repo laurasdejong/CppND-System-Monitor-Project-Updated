@@ -166,7 +166,7 @@ string LinuxParser::User(int pid) {
       while (linestream >> key >> value) {
         if (value == pid) {
           //ToDo remove doubledots
-          // get 'key' located before value
+          // get 'key' which located before value
           return key;
         }
       }
@@ -176,11 +176,11 @@ string LinuxParser::User(int pid) {
 }
 
 // TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) {
+long LinuxParser::UpTime(int pid) {
   float value;
   string line;
   int i = 0;
+  int place = 22; //start time https://man7.org/linux/man-pages/man5/proc.5.html
 
   //search dir
   std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
@@ -189,10 +189,10 @@ long LinuxParser::UpTime(int pid[[maybe_unused]]) {
       std::istringstream linestream(line);
       while (linestream >> value) {
         i++;
-        if (i == 22){
-          int ticks = value/sysconf(_SC_CLK_TCK);
-          // ToDo format.cpp Time() voor "HH:MM:SS"
-          return ticks;
+        if (i == place){
+          //return 22th element
+          int secs = value/sysconf(_SC_CLK_TCK);
+          return secs;
         }
       }
     }
