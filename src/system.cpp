@@ -15,10 +15,28 @@ using std::string;
 using std::vector;
 
 // TODO: Return the system's CPU
+// Good as is?
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() {
+    // Get PIDs
+    std::vector<int> pids = LinuxParser::Pids();
+
+    // Make processes
+    for (int pid : pids){
+        // maak PID aan
+
+    }
+
+
+    // maak proces
+
+    // sort on cpu
+
+    // prop in vector
+
+    return processes_; }
 
 std::string System::Kernel() { return LinuxParser::Kernel(); }
 

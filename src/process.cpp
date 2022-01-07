@@ -15,8 +15,7 @@ int Process::Pid() { return pid_; }
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() {
-    // source: https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux
-    // LinuxParser::GetValue("/proc/stat", )
+    // wss LinuxParser::ActiveJiffies(pid_)
     return 0; }
 
 string Process::Command() { return LinuxParser::Command(pid_); }
