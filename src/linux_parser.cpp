@@ -91,37 +91,17 @@ long LinuxParser::UpTime() {
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() {
+  return ActiveJiffies()+IdleJiffies();
   // active/(active+idle)
-  return 0; }
+  }
 
 // TODO: Read and return the number of active jiffies for a PID
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) {
-  float value;
-  string line;
-  int i = 0;
+long LinuxParser::ActiveJiffies(int pid) {
   int place_min = 14; //https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat/16736599#16736599
   int place_max = 17;
-  int sum =0;
+  string dir = kProcDirectory+to_string(pid)+kStatFilename;
 
-  //search dir
-  std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
-      std::istringstream linestream(line);
-      while (linestream >> value) {
-        i++;
-        if (i >= place_min){
-          sum +=value;
-          if (i>= place_max){
-            //return sum of 14th to 17th element
-            return sum;
-          }
-        }
-      }
-    }
-  }
-   return 0; }
+  return GetSumRange(dir,place_min,place_max); }
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() {
@@ -208,27 +188,10 @@ string LinuxParser::User(int pid) {
 
 // TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
-  float value;
-  string line;
-  int i = 0;
   int place = 22; //start time https://man7.org/linux/man-pages/man5/proc.5.html
+  string dir = kProcDirectory+to_string(pid)+kStatFilename;
 
-  //search dir
-  std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
-  if (filestream.is_open()) {
-    while (std::getline(filestream, line)) {
-      std::istringstream linestream(line);
-      while (linestream >> value) {
-        i++;
-        if (i == place){
-          //return 22th element
-          int secs = value/sysconf(_SC_CLK_TCK);
-          return secs;
-        }
-      }
-    }
-  }
-  return 0;
+  return GetSumRange(dir,place,place)/sysconf(_SC_CLK_TCK);
 }
 
 float LinuxParser::GetValue(string dir,string process_name){
@@ -249,4 +212,30 @@ float LinuxParser::GetValue(string dir,string process_name){
     }
   }
   return 0;
+}
+
+long LinuxParser::GetSumRange(string dir ,int place_min, int place_max){
+  float value;
+  string line;
+  int i = 0;
+  long sum =0;
+
+  //search dir
+  std::ifstream filestream(dir);
+  if (filestream.is_open()) {
+    while (std::getline(filestream, line)) {
+      std::istringstream linestream(line);
+      while (linestream >> value) {
+        i++;
+        if (i >= place_min){
+          sum +=value;
+          if (i>= place_max){
+            //return sum of 14th to 17th element
+            return sum;
+          }
+        }
+      }
+    }
+  }
+   return 0;
 }

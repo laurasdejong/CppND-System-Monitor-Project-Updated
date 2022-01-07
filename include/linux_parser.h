@@ -27,6 +27,7 @@ int RunningProcesses();
 std::string OperatingSystem();
 std::string Kernel();
 float GetValue(std::string dir,std::string process_name);
+long GetSumRange(std::string dir ,int place_min, int place_max);
 
 
 // CPU
