@@ -77,7 +77,6 @@ float LinuxParser::MemoryUtilization() {
   return 0;
 }
 
-// TODO: Read and return the system uptime
 long LinuxParser::UpTime() {
   long up_time = 0;
   string line;
@@ -88,7 +87,6 @@ long LinuxParser::UpTime() {
     linestream >> up_time;
   }
   return up_time/sysconf(_SC_CLK_TCK);
-  // ToDo format.cpp Time() voor "HH:MM:SS"
 }
 
 // TODO: Read and return the number of jiffies for the system
