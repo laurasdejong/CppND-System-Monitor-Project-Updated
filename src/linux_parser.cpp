@@ -135,6 +135,7 @@ string LinuxParser::Command(int pid) {
   string path = kProcDirectory+to_string(pid)+kCmdlineFilename;
   std::ifstream stream(path);
 
+  // Get whole line
   if (stream.is_open()) {
     std::getline(stream, line);
     return line;
@@ -167,6 +168,7 @@ string LinuxParser::User(int pid) {
       while (linestream >> key >> value) {
         if (value == pid) {
           //ToDo remove doubledots
+          // get 'key' located before value
           return key;
         }
       }
@@ -181,6 +183,8 @@ long LinuxParser::UpTime(int pid[[maybe_unused]]) {
   float value;
   string line;
   int i = 0;
+
+  //search dir
   std::ifstream filestream(kProcDirectory+to_string(pid)+kStatFilename);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
@@ -201,12 +205,15 @@ long LinuxParser::UpTime(int pid[[maybe_unused]]) {
 float LinuxParser::GetValue(string dir,string process_name){
   string line, key;
   float value;
+
+  // search dir
   std::ifstream filestream(dir);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
       std::istringstream linestream(line);
       while (linestream >> key >> value) {
         if (key == process_name) {
+          // Get number behind 'key'
           return value;
         }
       }
