@@ -28,15 +28,12 @@ vector<Process>& System::Processes() {
         // maak PID aan
         Process p(pid);
         processes_.emplace_back(p);
-
     }
 
-
-    // maak proces
-
     // sort on cpu
-
-    // prop in vector
+    std::sort(processes_.begin(),processes_.end(),[ ]( Process n1, Process n2){
+        return n1.CpuUtilization() > n2.CpuUtilization();
+    });
 
     return processes_; }
 
