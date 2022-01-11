@@ -89,13 +89,11 @@ long LinuxParser::UpTime() {
   return up_time/sysconf(_SC_CLK_TCK);
 }
 
-// TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() {
   return ActiveJiffies()+IdleJiffies();
   // active/(active+idle)
   }
 
-// TODO: Read and return the number of active jiffies for a PID
 long LinuxParser::ActiveJiffies(int pid) {
   int place_min = 14; //https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat/16736599#16736599
   int place_max = 17;
@@ -103,7 +101,6 @@ long LinuxParser::ActiveJiffies(int pid) {
   return GetSumRange(dir,place_min,place_max);
 }
 
-// TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() {
   string dir = kProcDirectory+kStatFilename;
   int place1_min = 2; //=1("CPU")+nth Jiffy, https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux
@@ -111,14 +108,15 @@ long LinuxParser::ActiveJiffies() {
   int place2_min = 7;
   int place2_max = 9;
 
-  return GetSumRange(dir,place1_min,place1_max)+GetSumRange(dir,place2_min,place2_max); }
+  return GetSumRange(dir,place1_min,place1_max)+GetSumRange(dir,place2_min,place2_max);
+}
 
-// TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() {
   string dir = kProcDirectory+kStatFilename;
   int place_min = 5; //=1("CPU")+nth Jiffy, https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux
   int place_max = 6;
-  return GetSumRange(dir,place_min,place_max); }
+  return GetSumRange(dir,place_min,place_max);
+}
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
