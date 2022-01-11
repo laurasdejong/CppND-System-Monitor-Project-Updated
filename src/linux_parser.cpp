@@ -138,7 +138,6 @@ int LinuxParser::RunningProcesses() {
   return (int)running_process_float;
 }
 
-// TODO: Read and return the command associated with a process
 string LinuxParser::Command(int pid) {
   string line;
   string path = kProcDirectory+to_string(pid)+kCmdlineFilename;
@@ -156,7 +155,7 @@ string LinuxParser::Command(int pid) {
 string LinuxParser::Ram(int pid) {
   string path = kProcDirectory+to_string(pid)+kStatusFilename;
   float ram_kb = GetValue(path,"VmSize:");
-  return to_string(ram_kb/1000);
+  return to_string((int)(ram_kb/1000));
 }
 
 // TODO: Read and return the user ID associated with a process
@@ -168,22 +167,21 @@ string LinuxParser::Uid(int pid) {
 
 // TODO: Read and return the user associated with a process
 string LinuxParser::User(int pid) {
-  string line, key;
-  float value;
+  string line, x, key;
+  int value;
   std::ifstream filestream(kPasswordPath);
   if (filestream.is_open()) {
     while (std::getline(filestream, line)) {
+      std::replace(line.begin(), line.end(), ':', ' ');
       std::istringstream linestream(line);
-      while (linestream >> key >> value) {
+      while (linestream >> key >> x >> value) {
         if (value == pid) {
-          //ToDo remove doubledots
-          // get 'key' which located before value
           return key;
         }
       }
     }
   }
-  return string();
+  return string("");
 }
 
 // TODO: Read and return the uptime of a process
