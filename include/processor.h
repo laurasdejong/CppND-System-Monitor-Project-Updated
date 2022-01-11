@@ -6,6 +6,7 @@ class Processor {
   float Utilization();
 
   // TODO: Declare any necessary private members
+  // not needed?
  private:
 };
 

@@ -12,12 +12,11 @@ class Process {
   int Pid();
   std::string User();
   std::string Command();
-  float CpuUtilization();                  // TODO: See src/process.cpp
+  float CpuUtilization();
   std::string Ram();
   long int UpTime();
   bool operator<(Process const& a) const;  // TODO: See src/process.cpp
 
-  // TODO: Declare any necessary private members
  private:
  int pid_;
 };

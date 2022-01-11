@@ -156,21 +156,18 @@ string LinuxParser::Command(int pid) {
   return string();
 }
 
-// TODO: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
   string path = kProcDirectory+to_string(pid)+kStatusFilename;
   int ram_mb = GetValue(path,"VmSize:")/1000;
   return to_string(ram_mb);
 }
 
-// TODO: Read and return the user ID associated with a process
 string LinuxParser::Uid(int pid) {
   string path = kProcDirectory+to_string(pid)+kStatusFilename;
   float uid = GetValue(path,"Uid:");
   return to_string(uid);
 }
 
-// TODO: Read and return the user associated with a process
 string LinuxParser::User(int pid) {
   string line, x, key;
   int value;
@@ -189,13 +186,10 @@ string LinuxParser::User(int pid) {
   return string("");
 }
 
-// TODO: Read and return the uptime of a process
 long LinuxParser::UpTime(int pid) {
   int place = 22; //start time https://man7.org/linux/man-pages/man5/proc.5.html
   string dir = kProcDirectory+to_string(pid)+kStatFilename;
-
-  long temp = GetSumRange(dir,place,place)/sysconf(_SC_CLK_TCK);
-  return temp;
+  return GetSumRange(dir,place,place)/sysconf(_SC_CLK_TCK);
 }
 
 float LinuxParser::GetValue(string dir,string process_name){
