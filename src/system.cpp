@@ -20,14 +20,16 @@ Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() {
-    // Get PIDs
+    // Get active PIDs
     std::vector<int> pids = LinuxParser::Pids();
 
-    // Make processes
+    // Make processes for new pids
     for (int pid : pids){
-        // maak PID aan
-        Process p(pid);
-        processes_.emplace_back(p);
+        if(std::find(pid_list_.begin(), pid_list_.end(), pid) == pid_list_.end()) {
+            Process p(pid);
+            processes_.emplace_back(p);
+            pid_list_.emplace_back(pid);
+        }
     }
 
     // sort on cpu
