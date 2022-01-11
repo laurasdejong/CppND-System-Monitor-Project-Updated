@@ -19,9 +19,6 @@ string Format::ElapsedTime(long seconds) {
     sec = leftover_seconds%min_unit;
     min = (leftover_seconds-sec)/min_unit;
 
-    //set double digets
-    if (sec <= 9){}
-
     //makestring
     elapesd_time = SetDoubleDigets(hour)+":"+SetDoubleDigets(min)+":"+SetDoubleDigets(sec);
 
