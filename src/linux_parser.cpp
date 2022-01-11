@@ -101,7 +101,9 @@ long LinuxParser::ActiveJiffies(int pid) {
   int place_max = 17;
   string dir = kProcDirectory+to_string(pid)+kStatFilename;
 
-  return GetSumRange(dir,place_min,place_max); }
+  // return GetSumRange(dir,place_min,place_max);
+  return 0;
+}
 
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() {
@@ -154,8 +156,8 @@ string LinuxParser::Command(int pid) {
 // TODO: Read and return the memory used by a process
 string LinuxParser::Ram(int pid) {
   string path = kProcDirectory+to_string(pid)+kStatusFilename;
-  float ram_kb = GetValue(path,"VmSize:");
-  return to_string((int)(ram_kb/1000));
+  int ram_mb = GetValue(path,"VmSize:")/1000;
+  return to_string(ram_mb);
 }
 
 // TODO: Read and return the user ID associated with a process
@@ -189,7 +191,8 @@ long LinuxParser::UpTime(int pid) {
   int place = 22; //start time https://man7.org/linux/man-pages/man5/proc.5.html
   string dir = kProcDirectory+to_string(pid)+kStatFilename;
 
-  return GetSumRange(dir,place,place)/sysconf(_SC_CLK_TCK);
+  long temp = GetSumRange(dir,place,place)/sysconf(_SC_CLK_TCK);
+  return temp;
 }
 
 float LinuxParser::GetValue(string dir,string process_name){
@@ -213,7 +216,7 @@ float LinuxParser::GetValue(string dir,string process_name){
 }
 
 long LinuxParser::GetSumRange(string dir ,int place_min, int place_max){
-  float value;
+  string value;
   string line;
   int i = 0;
   long sum =0;
@@ -226,7 +229,7 @@ long LinuxParser::GetSumRange(string dir ,int place_min, int place_max){
       while (linestream >> value) {
         i++;
         if (i >= place_min){
-          sum +=value;
+          sum +=stoi(value);
           if (i>= place_max){
             return sum;
           }
