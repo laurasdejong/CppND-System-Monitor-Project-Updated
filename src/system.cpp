@@ -26,6 +26,8 @@ vector<Process>& System::Processes() {
     // Make processes
     for (int pid : pids){
         // maak PID aan
+        Process p(pid);
+        processes_.emplace_back(p);
 
     }
 
