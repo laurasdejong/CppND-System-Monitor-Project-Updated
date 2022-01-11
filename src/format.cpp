@@ -19,7 +19,17 @@ string Format::ElapsedTime(long seconds) {
     sec = leftover_seconds%min_unit;
     min = (leftover_seconds-sec)/min_unit;
 
+    //set double digets
+    if (sec <= 9){}
+
     //makestring
-    elapesd_time = to_string(hour)+":"+to_string(min)+":"+to_string(sec);
+    elapesd_time = SetDoubleDigets(hour)+":"+SetDoubleDigets(min)+":"+SetDoubleDigets(sec);
 
     return elapesd_time; }
+
+string Format::SetDoubleDigets(int p){
+    if (p <=9 ){
+        return ("0"+to_string(p));
+    }
+    return to_string(p);
+}

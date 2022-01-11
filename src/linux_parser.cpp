@@ -106,12 +106,12 @@ long LinuxParser::ActiveJiffies(int pid) {
 // TODO: Read and return the number of active jiffies for the system
 long LinuxParser::ActiveJiffies() {
   // = 1+2+3+6+7+8
-  return 0; }
+  return 1; }
 
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() {
   // = 4+5
-  return 0; }
+  return 1; }
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() {
@@ -230,7 +230,6 @@ long LinuxParser::GetSumRange(string dir ,int place_min, int place_max){
         if (i >= place_min){
           sum +=value;
           if (i>= place_max){
-            //return sum of 14th to 17th element
             return sum;
           }
         }
