@@ -6,21 +6,13 @@ using std::string;
 using std::to_string;
 
 string Format::ElapsedTime(long seconds) {
-    int sec, min, hour;
-    int hour_unit = 60*60;
-    int min_unit = 60;
-    string elapesd_time;
-
-    //get hours
-    int leftover_seconds = seconds%hour_unit;
-    hour = (seconds-leftover_seconds)/hour_unit;
-
-    //get minutes (and seconds)
-    sec = leftover_seconds%min_unit;
-    min = (leftover_seconds-sec)/min_unit;
+    int hour = seconds / 3600;
+    seconds = seconds % 3600;
+    int min = seconds / 60;
+    int sec = seconds % 60;
 
     //makestring
-    elapesd_time = SetDoubleDigets(hour)+":"+SetDoubleDigets(min)+":"+SetDoubleDigets(sec);
+    string elapesd_time = SetDoubleDigets(hour)+":"+SetDoubleDigets(min)+":"+SetDoubleDigets(sec);
 
     return elapesd_time; }
 
