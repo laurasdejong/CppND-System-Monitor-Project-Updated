@@ -177,7 +177,8 @@ string LinuxParser::User(int pid) {
       std::replace(line.begin(), line.end(), ':', ' ');
       std::istringstream linestream(line);
       while (linestream >> key >> x >> value) {
-        if (value == pid) {
+        string uid = Uid(pid);
+        if (value == stoi(Uid(pid))) {
           return key;
         }
       }
