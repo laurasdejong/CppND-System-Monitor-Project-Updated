@@ -7,9 +7,7 @@
 #include "process.h"
 #include "linux_parser.h"
 
-using std::string;
-using std::to_string;
-using std::vector;
+using namespace std;
 
 int Process::Pid() { return pid_; }
 

@@ -9,10 +9,7 @@
 #include "system.h"
 #include "linux_parser.h"
 
-using std::set;
-using std::size_t;
-using std::string;
-using std::vector;
+using namespace std;
 
 // TODO: Return the system's CPU
 // Good as is?
@@ -25,8 +22,7 @@ vector<Process>& System::Processes() {
     // Make processes for new pids
     for (int pid : pids){
         if(std::find(pid_list_.begin(), pid_list_.end(), pid) == pid_list_.end()) {
-            Process p(pid);
-            processes_.emplace_back(p);
+            processes_.emplace_back(pid);
             pid_list_.emplace_back(pid);
         }
     }

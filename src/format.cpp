@@ -2,8 +2,7 @@
 
 #include "format.h"
 
-using std::string;
-using std::to_string;
+using namespace std;
 
 string Format::ElapsedTime(long seconds) {
     int hour = seconds / 3600;
