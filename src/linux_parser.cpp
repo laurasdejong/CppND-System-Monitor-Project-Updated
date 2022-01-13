@@ -158,7 +158,7 @@ string LinuxParser::Command(int pid) {
 
 string LinuxParser::Ram(int pid) {
   string path = kProcDirectory+to_string(pid)+kStatusFilename;
-  int ram_mb = GetValue(path,"VmSize:")/1000;
+  int ram_mb = GetValue(path,"VmRSS:")/1000; //Was VnSize, changed as suggested by reviewer, based on source https://man7.org/linux/man-pages/man5/proc.5.html
   return to_string(ram_mb);
 }
 
